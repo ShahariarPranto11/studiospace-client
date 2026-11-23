@@ -7,7 +7,6 @@ import {
   ArrowRightIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
-  PlayIcon,
 } from "lucide-react"
 import { Button, buttonVariants } from "@/components/ui/button"
 import { cn } from "cn"
