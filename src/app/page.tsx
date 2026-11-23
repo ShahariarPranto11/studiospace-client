@@ -1,5 +1,7 @@
+import { AboutUs } from "@/components/about-us"
 import { Banner } from "@/components/banner"
 import { BrowseCategories } from "@/components/browse-categories"
+import { HowItWorks } from "@/components/how-it-works"
 
 export default function Home() {
   return (
@@ -7,6 +9,8 @@ export default function Home() {
       <main>
         <Banner />
         <BrowseCategories />
+        <HowItWorks />
+        <AboutUs />
       </main>
     </div>
   )
