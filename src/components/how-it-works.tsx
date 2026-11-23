@@ -45,8 +45,9 @@ const promises = [
 function HowItWorks() {
   return (
     <section
+      id="how-it-works"
       aria-labelledby="how-it-works-heading"
-      className="relative overflow-hidden bg-neutral-950 px-4 py-16 sm:px-6 lg:px-8"
+      className="relative scroll-mt-16 overflow-hidden bg-neutral-950 px-4 py-16 sm:px-6 lg:px-8"
     >
       <div
         aria-hidden

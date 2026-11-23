@@ -25,8 +25,9 @@ const values = [
 function AboutUs() {
   return (
     <section
+      id="about-us"
       aria-labelledby="about-us-heading"
-      className="bg-neutral-950 px-4 py-16 sm:px-6 lg:px-8"
+      className="scroll-mt-16 bg-neutral-950 px-4 py-16 sm:px-6 lg:px-8"
     >
       <div className="mx-auto max-w-7xl">
         <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
@@ -54,7 +55,7 @@ function AboutUs() {
 
           <div className="relative aspect-[4/3] overflow-hidden rounded-2xl ring-1 ring-white/10">
             <Image
-              src="/categories/photo-studios.jpg"
+              src="/banner/studio-3.jpg"
               alt="Creators collaborating in a bright photo studio"
               fill
               sizes="(max-width: 1024px) 100vw, 50vw"

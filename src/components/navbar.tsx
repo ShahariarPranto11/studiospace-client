@@ -10,8 +10,8 @@ import { cn } from "cn"
 const navLinks = [
   { label: "Home", href: "/", active: true },
   { label: "Explore Studios", href: "/studios", active: false },
-  { label: "How It Works", href: "/how-it-works", active: false },
-  { label: "About Us", href: "/about", active: false },
+  { label: "How It Works", href: "/#how-it-works", active: false },
+  { label: "About Us", href: "/#about-us", active: false },
 ] as const
 
 function Navbar() {
