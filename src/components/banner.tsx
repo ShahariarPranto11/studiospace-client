@@ -83,7 +83,7 @@ function Banner() {
 
           <div className="mt-9 flex flex-wrap items-center gap-4">
             <Link
-              href="/studios"
+              href="/explore-studio"
               className={cn(
                 buttonVariants(),
                 "h-12 gap-2 rounded-full bg-lime-400 px-7 text-base font-semibold text-black hover:bg-lime-300"

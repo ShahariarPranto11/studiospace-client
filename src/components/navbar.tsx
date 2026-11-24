@@ -9,7 +9,8 @@ import { cn } from "cn"
 
 const navLinks = [
   { label: "Home", href: "/", active: true },
-  { label: "Explore Studios", href: "/studios", active: false },
+  { label: "Explore Studios", href: "/explore-studio", active: false },
+  { label: "Add Studio", href: "/add-studio", active: false },
   { label: "How It Works", href: "/#how-it-works", active: false },
   { label: "About Us", href: "/#about-us", active: false },
 ] as const

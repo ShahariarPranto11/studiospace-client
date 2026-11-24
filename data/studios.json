@@ -1,0 +1,23 @@
+[
+  {
+    "id": "0ad5a6b0-9935-4721-b9cc-a40683fe312c",
+    "title": "Demo Photo Studio",
+    "category": "photo-studios",
+    "capacity": 4,
+    "location": "123 Creative Ave, Berlin",
+    "hourlyRate": 45,
+    "securityDeposit": 50,
+    "amenities": [
+      "WiFi",
+      "Lighting Kit"
+    ],
+    "image": "https://example.com/studio.jpg",
+    "overview": "A bright space with great light.",
+    "host": {
+      "name": "Rafiq Ahmed",
+      "email": "rafiq@example.com"
+    },
+    "status": "published",
+    "createdAt": "2026-11-24T16:10:52.038Z"
+  }
+]
