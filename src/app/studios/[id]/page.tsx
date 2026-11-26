@@ -61,7 +61,9 @@ const StudioDetailsPage = () => {
 
   const resolveImage = (value?: string) => {
     if (!value) return "";
-    return value.startsWith("http") ? value : `http://localhost:8000/uploads/${value}`;
+    return value.startsWith("http")
+      ? value
+      : `http://localhost:8000/uploads/${value}`;
   };
 
   const imageSrc = resolveImage(studio.imageUrl);
@@ -71,7 +73,7 @@ const StudioDetailsPage = () => {
       <div className="mx-auto max-w-6xl">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           <div className="lg:col-span-8 space-y-6">
-            <div className="relative group h-[450px] overflow-hidden rounded-xl">
+            <div className="relative group h-112.5 overflow-hidden rounded-xl">
               <Image
                 src={imageSrc}
                 alt={studio.title}
@@ -89,7 +91,10 @@ const StudioDetailsPage = () => {
                 const thumb = studio.galleryImages?.[i];
                 const src = resolveImage(thumb || studio.imageUrl);
                 return (
-                  <div key={i} className="h-24 relative overflow-hidden rounded-lg">
+                  <div
+                    key={i}
+                    className="h-24 relative overflow-hidden rounded-lg"
+                  >
                     <Image
                       src={src}
                       alt={`${studio.title} thumbnail`}
@@ -102,7 +107,9 @@ const StudioDetailsPage = () => {
               })}
             </div>
 
-            <h1 className="mt-2 text-3xl font-bold tracking-tight">{studio.title}</h1>
+            <h1 className="mt-2 text-3xl font-bold tracking-tight">
+              {studio.title}
+            </h1>
 
             <p className="mt-1 text-[#929992]">
               {studio.location} ·{" "}
@@ -148,9 +155,7 @@ const StudioDetailsPage = () => {
                   >
                     <p className="font-bold flex items-baseline gap-1">
                       {review.user} ·
-                      <span className="text-[#C5F36A]">
-                        ★ {review.rating}
-                      </span>
+                      <span className="text-[#C5F36A]">★ {review.rating}</span>
                     </p>
                     <p className="mt-0.5 text-sm text-[#929992]">
                       {review.comment}

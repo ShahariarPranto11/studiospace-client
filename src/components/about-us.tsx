@@ -1,5 +1,5 @@
-import Image from "next/image"
-import { HeartHandshakeIcon, LightbulbIcon, UsersIcon } from "lucide-react"
+import Image from "next/image";
+import { HeartHandshakeIcon, LightbulbIcon, UsersIcon } from "lucide-react";
 
 const values = [
   {
@@ -20,7 +20,7 @@ const values = [
     description:
       "Transparent pricing for creators and reliable payouts for hosts.",
   },
-]
+];
 
 function AboutUs() {
   return (
@@ -53,9 +53,9 @@ function AboutUs() {
             </p>
           </div>
 
-          <div className="relative aspect-[4/3] overflow-hidden rounded-2xl ring-1 ring-white/10">
+          <div className="relative aspect-4/3 overflow-hidden rounded-2xl ring-1 ring-white/10">
             <Image
-              src="/banner/studio-3.jpg"
+              src="/images/studio-3.jpg"
               alt="Creators collaborating in a bright photo studio"
               fill
               sizes="(max-width: 1024px) 100vw, 50vw"
@@ -70,7 +70,7 @@ function AboutUs() {
 
         <ul className="mt-14 grid gap-6 sm:grid-cols-3">
           {values.map((value) => {
-            const Icon = value.icon
+            const Icon = value.icon;
             return (
               <li
                 key={value.title}
@@ -89,12 +89,12 @@ function AboutUs() {
                   {value.description}
                 </p>
               </li>
-            )
+            );
           })}
         </ul>
       </div>
     </section>
-  )
+  );
 }
 
-export { AboutUs }
+export { AboutUs };
