@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -27,6 +28,8 @@ export default function AddStudioPage() {
   const [amenities, setAmenities] = useState<string[]>(["WiFi"]);
   const [imageUrl, setImageUrl] = useState("");
   const [imageFile, setImageFile] = useState<File | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
 
   const [formData, setFormData] = useState({
     title: "",
@@ -41,7 +44,7 @@ export default function AddStudioPage() {
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >,
+    >
   ) => {
     setFormData({
       ...formData,
@@ -63,35 +66,100 @@ export default function AddStudioPage() {
     const file = e.target.files?.[0];
 
     if (file) {
+      if (!file.type.startsWith("image/")) {
+        setMessage("Please select a valid image.");
+        return;
+      }
+
       setImageFile(file);
+      setMessage("");
     }
   };
 
-  // Publish Studio
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-  e.preventDefault();
+  // Upload image to ImgBB
+  const uploadImage = async () => {
+    if (!imageFile) {
+      return imageUrl;
+    }
 
-  try {
-    const res = await fetch("http://localhost:8000/add-studio", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        ...formData,
-        amenities,
-        imageUrl,
-        imageFile,
-      }),
-    });
+    const apiKey = process.env.NEXT_PUBLIC_IMGBB_API_KEY;
+
+    if (!apiKey) {
+      throw new Error("ImgBB API key is missing.");
+    }
+
+    const formData = new FormData();
+    formData.append("image", imageFile);
+
+    const res = await fetch(
+      `https://api.imgbb.com/1/upload?key=${apiKey}`,
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
 
     const data = await res.json();
 
-    console.log(data);
-  } catch (error) {
-    console.log("Error:", error);
-  }
-};
+    if (!res.ok || !data.success) {
+      throw new Error("Image upload failed. Please try again.");
+    }
+
+    return data.data.url;
+  };
+
+  // Publish Studio
+  const handleSubmit = async (
+    e: React.FormEvent<HTMLFormElement>
+  ) => {
+    e.preventDefault();
+
+    setLoading(true);
+    setMessage("");
+
+    try {
+      // Upload image first
+      const uploadedImageUrl = await uploadImage();
+
+      if (!uploadedImageUrl) {
+        throw new Error("Please select an image or provide an image URL.");
+      }
+
+      // Save studio information
+      const res = await fetch("http://localhost:8000/add-studio", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...formData,
+          maxCapacity: Number(formData.maxCapacity),
+          hourlyRate: Number(formData.hourlyRate),
+          securityDeposit: Number(formData.securityDeposit),
+          amenities,
+          imageUrl: uploadedImageUrl,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok || !data.success) {
+        throw new Error(data.message || "Failed to add studio.");
+      }
+
+      setMessage("Studio published successfully!");
+
+      router.push("/explore-studio");
+    } catch (error) {
+      if (error instanceof Error) {
+        setMessage(error.message);
+      } else {
+        setMessage("Something went wrong.");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const inputClass =
     "w-full rounded-xl border border-[#303632] bg-[#171B19] px-3 py-2.5 text-sm text-white placeholder:text-[#929992] outline-none focus:border-[#C5F36A]";
@@ -132,7 +200,6 @@ export default function AddStudioPage() {
               <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                 <div>
                   <label className={labelClass}>Category</label>
-
                   <select
                     name="category"
                     value={formData.category}
@@ -247,7 +314,7 @@ export default function AddStudioPage() {
 
             <div className="rounded-xl border border-dashed border-[#303632] bg-[#171B19] p-4">
               <p className="mb-3 text-center text-xs text-[#929992]">
-                Image URL or upload (imgbb)
+                Image URL or upload (ImgBB)
               </p>
 
               <input
@@ -268,6 +335,12 @@ export default function AddStudioPage() {
                   className="hidden"
                 />
               </label>
+
+              {imageFile && (
+                <p className="mt-2 text-center text-xs text-gray-400">
+                  Selected: {imageFile.name}
+                </p>
+              )}
             </div>
           </section>
 
@@ -293,7 +366,6 @@ export default function AddStudioPage() {
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
               <div>
                 <label className={labelClass}>Host Name (read-only)</label>
-
                 <input
                   type="text"
                   value=""
@@ -305,7 +377,6 @@ export default function AddStudioPage() {
 
               <div>
                 <label className={labelClass}>Host Email (read-only)</label>
-
                 <input
                   type="email"
                   value=""
@@ -317,21 +388,30 @@ export default function AddStudioPage() {
             </div>
           </section>
 
+          {/* MESSAGE */}
+          {message && (
+            <p className="text-center text-sm text-[#C5F36A]">
+              {message}
+            </p>
+          )}
+
           {/* BUTTONS */}
           <div className="flex justify-end gap-2 border-t border-[#303632] pt-5">
             <button
               type="button"
               onClick={() => router.push("/")}
               className="rounded-full border border-[#52602F] px-5 py-2 text-xs font-medium hover:bg-[#1B1F1D]"
+              disabled={loading}
             >
               Cancel
             </button>
 
             <button
               type="submit"
-              className="rounded-full bg-[#C5F36A] px-5 py-2 text-xs font-bold text-[#111312] transition hover:bg-[#D5FF7A]"
+              disabled={loading}
+              className="rounded-full bg-[#C5F36A] px-5 py-2 text-xs font-bold text-[#111312] transition hover:bg-[#D5FF7A] disabled:cursor-not-allowed disabled:opacity-60"
             >
-              Publish Studio
+              {loading ? "Publishing..." : "Publish Studio"}
             </button>
           </div>
         </form>
@@ -339,3 +419,4 @@ export default function AddStudioPage() {
     </main>
   );
 }
+

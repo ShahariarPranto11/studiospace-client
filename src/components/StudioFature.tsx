@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 
 interface Studio {
   _id: string;
@@ -172,7 +171,6 @@ const StudioFature = () => {
               {/* Studio Image */}
               <div className="h-40 overflow-hidden">
                 <img
-                  
                   src={
                     studio.imageUrl.startsWith("http")
                       ? studio.imageUrl
@@ -201,7 +199,7 @@ const StudioFature = () => {
 
                 {/* Details Button */}
                 <Link
-                  href={`/explore-studio/${studio._id}`}
+                  href={`/studios/${studio._id}`}
                   className="mt-3 block rounded-full border border-green-700 py-2 text-center text-xs hover:bg-green-700"
                 >
                   View Details
